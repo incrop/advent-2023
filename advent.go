@@ -1,7 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"advent/tasks"
+	"fmt"
+)
 
 func main() {
-    fmt.Println("Hello, world.")
+	fmt.Println(tasks.Day02())
 }
