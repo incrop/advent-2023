@@ -55,7 +55,7 @@ func d02_parseGame(str string) d02_Game {
 	}
 }
 
-func sumCorrectIds(acc int, game d02_Game) int {
+func d02_sumCorrectIds(acc int, game d02_Game) int {
 	for _, cubeset := range game.cubesets {
 		if cubeset.red > 12 || cubeset.green > 13 || cubeset.blue > 14 {
 			return acc
@@ -64,7 +64,7 @@ func sumCorrectIds(acc int, game d02_Game) int {
 	return acc + game.id
 }
 
-func sumMinimalPowers(acc int, game d02_Game) int {
+func d02_sumMinimalPowers(acc int, game d02_Game) int {
 	minCubeset := d02_Cubes{}
 	for _, cubeset := range game.cubesets {
 		if minCubeset.red < cubeset.red {
@@ -82,5 +82,5 @@ func sumMinimalPowers(acc int, game d02_Game) int {
 }
 
 func Day02() int {
-	return utils.ProcessInput("day02.txt", 0, d02_parseGame, sumMinimalPowers)
+	return utils.ProcessInput("day02.txt", 0, d02_parseGame, d02_sumMinimalPowers)
 }

@@ -30,3 +30,7 @@ func ProcessInput[T any, R any](name string, seed R, parseLine func(string) T, j
 func Sum(a int, b int) int {
 	return a + b
 }
+
+func Identity[T any](a T) T {
+	return a
+}
