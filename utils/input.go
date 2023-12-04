@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"log"
 	"os"
+	"strings"
 )
 
 func ProcessInput[T any, R any](name string, seed R, parseLine func(string) T, join func(R, T) R) R {
@@ -33,4 +34,11 @@ func Sum(a int, b int) int {
 
 func Identity[T any](a T) T {
 	return a
+}
+
+func Fields(str string, spaces string) []string {
+	f := func(c rune) bool {
+		return strings.ContainsRune(spaces, c)
+	}
+	return strings.FieldsFunc(str, f)
 }

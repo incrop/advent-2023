@@ -17,16 +17,9 @@ type d02_Game struct {
 	cubesets []d02_Cubes
 }
 
-func d01_fields(str string, spaces string) []string {
-	f := func(c rune) bool {
-		return strings.ContainsRune(spaces, c)
-	}
-	return strings.FieldsFunc(str, f)
-}
-
 func d02_parseCubes(str string) d02_Cubes {
 	cubes := d02_Cubes{}
-	for _, cubeStr := range d01_fields(str, ",") {
+	for _, cubeStr := range utils.Fields(str, ",") {
 		numAndColor := strings.Fields(cubeStr)
 		num, _ := strconv.Atoi(numAndColor[0])
 		switch numAndColor[1] {
@@ -42,7 +35,7 @@ func d02_parseCubes(str string) d02_Cubes {
 }
 
 func d02_parseGame(str string) d02_Game {
-	idAndCubesets := d01_fields(str, ":;")
+	idAndCubesets := utils.Fields(str, ":;")
 	idStr, _ := strings.CutPrefix(idAndCubesets[0], "Game ")
 	id, _ := strconv.Atoi(idStr)
 	cubesets := make([]d02_Cubes, len(idAndCubesets)-1, len(idAndCubesets)-1)
