@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"log"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -41,4 +42,17 @@ func Fields(str string, spaces string) []string {
 		return strings.ContainsRune(spaces, c)
 	}
 	return strings.FieldsFunc(str, f)
+}
+
+func ParseNumbers(str string) []int {
+	fields := strings.Fields(str)
+	numbers := make([]int, len(fields))
+	for i, field := range fields {
+		number, err := strconv.Atoi(field)
+		if err != nil {
+			panic(err)
+		}
+		numbers[i] = number
+	}
+	return numbers
 }
