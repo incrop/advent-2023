@@ -1,11 +1,11 @@
-package tasks
+package day01
 
 import (
 	"advent/utils"
 	"strings"
 )
 
-var d01_textToNumber = map[string]int{
+var textToNumber = map[string]int{
 	"1":     1,
 	"2":     2,
 	"3":     3,
@@ -28,12 +28,12 @@ var d01_textToNumber = map[string]int{
 	"zero":  0,
 }
 
-func d01_extractNumber(str string) int {
+func extractNumber(str string) int {
 	first_digit := 0
 	last_digit := 0
 	for pos := range str {
 		substr := str[pos:]
-		for text, number := range d01_textToNumber {
+		for text, number := range textToNumber {
 			if strings.HasPrefix(substr, text) {
 				last_digit = number
 				if first_digit == 0 {
@@ -45,6 +45,6 @@ func d01_extractNumber(str string) int {
 	return first_digit*10 + last_digit
 }
 
-func Day01() int {
-	return utils.ProcessInput("day01.txt", 0, d01_extractNumber, utils.Sum)
+func Run() int {
+	return utils.ProcessInput("day01.txt", 0, extractNumber, utils.Sum)
 }

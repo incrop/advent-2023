@@ -1,25 +1,25 @@
-package tasks
+package day03
 
 import (
 	"advent/utils"
 )
 
 const (
-	d03_Empty  = -1
-	d03_Gear   = -2
-	d03_Symbol = -2
+	Empty  = -1
+	Gear   = -2
+	Symbol = -2
 )
 
-type d03_Scheme struct {
+type Scheme struct {
 	data    [][]int
 	numbers []int
 }
 
-func (scheme d03_Scheme) partNumbers() []int {
+func (scheme Scheme) partNumbers() []int {
 	isPartNum := make([]bool, len(scheme.numbers))
 	for i, row := range scheme.data {
 		for j, val := range row {
-			if val != d03_Gear && val != d03_Symbol {
+			if val != Gear && val != Symbol {
 				continue
 			}
 			for m := max(i-1, 0); m <= min(i+1, len(scheme.data)-1); m++ {
@@ -41,11 +41,11 @@ func (scheme d03_Scheme) partNumbers() []int {
 	return partNums
 }
 
-func (scheme d03_Scheme) gearRatios() []int {
+func (scheme Scheme) gearRatios() []int {
 	gearRatios := make([]int, 0)
 	for i, row := range scheme.data {
 		for j, val := range row {
-			if val != d03_Gear {
+			if val != Gear {
 				continue
 			}
 			partNumbers := map[int]int{}
@@ -70,7 +70,7 @@ func (scheme d03_Scheme) gearRatios() []int {
 	return gearRatios
 }
 
-func d03_collectScheme(scheme d03_Scheme, row string) d03_Scheme {
+func collectScheme(scheme Scheme, row string) Scheme {
 	dataRow := make([]int, len(row))
 	numIdx := -1
 	for i, c := range row {
@@ -85,11 +85,11 @@ func d03_collectScheme(scheme d03_Scheme, row string) d03_Scheme {
 			numIdx = -1
 			switch c {
 			case '.':
-				dataRow[i] = d03_Empty
+				dataRow[i] = Empty
 			case '*':
-				dataRow[i] = d03_Gear
+				dataRow[i] = Gear
 			default:
-				dataRow[i] = d03_Symbol
+				dataRow[i] = Symbol
 			}
 		}
 	}
@@ -97,8 +97,8 @@ func d03_collectScheme(scheme d03_Scheme, row string) d03_Scheme {
 	return scheme
 }
 
-func Day03() int {
-	scheme := utils.ProcessInput("day03.txt", d03_Scheme{}, utils.Identity, d03_collectScheme)
+func Run() int {
+	scheme := utils.ProcessInput("day03.txt", Scheme{}, utils.Identity, collectScheme)
 	sum := 0
 	for _, num := range scheme.gearRatios() {
 		sum += num

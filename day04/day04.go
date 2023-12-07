@@ -1,4 +1,4 @@
-package tasks
+package day04
 
 import (
 	"advent/utils"
@@ -6,13 +6,13 @@ import (
 	"strings"
 )
 
-type d04_Card struct {
+type Card struct {
 	id      int
 	winning []int
 	yours   []int
 }
 
-func (card d04_Card) score() int {
+func (card Card) score() int {
 	winning := make(map[int]bool)
 	for _, num := range card.winning {
 		winning[num] = true
@@ -26,7 +26,7 @@ func (card d04_Card) score() int {
 	return score
 }
 
-func d04_parseCard(str string) d04_Card {
+func parseCard(str string) Card {
 	parts := utils.Fields(str, ":|")
 	idStr, _ := strings.CutPrefix(parts[0], "Card ")
 	id, _ := strconv.Atoi(strings.TrimSpace(idStr))
@@ -40,14 +40,14 @@ func d04_parseCard(str string) d04_Card {
 		}
 		numlists[i] = numlist
 	}
-	return d04_Card{
+	return Card{
 		id,
 		numlists[0],
 		numlists[1],
 	}
 }
 
-func d04_cardsValueSum(acc int, card d04_Card) int {
+func cardsValueSum(acc int, card Card) int {
 	score := card.score()
 	if score <= 0 {
 		return acc
@@ -55,23 +55,23 @@ func d04_cardsValueSum(acc int, card d04_Card) int {
 	return acc + 1<<(score-1)
 }
 
-type d04_Acc struct {
+type Acc struct {
 	cardSum     int
 	multipliers map[int]int
 }
 
-func d04_numberOfCardsWon(acc d04_Acc, card d04_Card) d04_Acc {
+func numberOfCardsWon(acc Acc, card Card) Acc {
 	multipliers := acc.multipliers
 	multiplier := multipliers[card.id] + 1
 	score := card.score()
 	for i := 0; i < score; i++ {
 		multipliers[card.id+1+i] += multiplier
 	}
-	return d04_Acc{acc.cardSum + multiplier, multipliers}
+	return Acc{acc.cardSum + multiplier, multipliers}
 }
 
-func Day04() int {
-	//return utils.ProcessInput("day04.txt", 0, d04_parseCard, d04_cardsValueSum)
-	acc := d04_Acc{0, make(map[int]int)}
-	return utils.ProcessInput("day04.txt", acc, d04_parseCard, d04_numberOfCardsWon).cardSum
+func Run() int {
+	//return utils.ProcessInput("day04.txt", 0, parseCard, cardsValueSum)
+	acc := Acc{0, make(map[int]int)}
+	return utils.ProcessInput("day04.txt", acc, parseCard, numberOfCardsWon).cardSum
 }
