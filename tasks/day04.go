@@ -2,7 +2,6 @@ package tasks
 
 import (
 	"advent/utils"
-	"fmt"
 	"strconv"
 	"strings"
 )
@@ -65,8 +64,6 @@ func d04_numberOfCardsWon(acc d04_Acc, card d04_Card) d04_Acc {
 	multipliers := acc.multipliers
 	multiplier := multipliers[card.id] + 1
 	score := card.score()
-	fmt.Println(acc)
-	fmt.Printf("Card %d won [%d * %d]\n", card.id, score, multiplier)
 	for i := 0; i < score; i++ {
 		multipliers[card.id+1+i] += multiplier
 	}
