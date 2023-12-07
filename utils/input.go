@@ -2,6 +2,7 @@ package utils
 
 import (
 	"bufio"
+	"fmt"
 	"log"
 	"os"
 	"strconv"
@@ -35,6 +36,11 @@ func Sum(a int, b int) int {
 
 func Identity[T any](a T) T {
 	return a
+}
+
+func JustPrint[R any, T any](r R, t T) R {
+	fmt.Println(t)
+	return r
 }
 
 func Fields(str string, spaces string) []string {
