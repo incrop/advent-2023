@@ -10,6 +10,13 @@ import (
 )
 
 func ProcessInput[T any, R any](name string, seed R, parseLine func(string) T, join func(R, T) R) R {
+	parseLineIgnoringNumbers := func(line string, _ int) T {
+		return parseLine(line)
+	}
+	return ProcessInputWithLineNumbers(name, seed, parseLineIgnoringNumbers, join)
+}
+
+func ProcessInputWithLineNumbers[T any, R any](name string, seed R, parseLine func(string, int) T, join func(R, T) R) R {
 	file, err := os.Open("input/" + name)
 	if err != nil {
 		log.Fatal(err)
@@ -18,9 +25,11 @@ func ProcessInput[T any, R any](name string, seed R, parseLine func(string) T, j
 
 	scanner := bufio.NewScanner(file)
 	result := seed
+	lineNumber := 0
 	for scanner.Scan() {
-		parsed := parseLine(scanner.Text())
+		parsed := parseLine(scanner.Text(), lineNumber)
 		result = join(result, parsed)
+		lineNumber++
 	}
 
 	if err := scanner.Err(); err != nil {
@@ -32,6 +41,13 @@ func ProcessInput[T any, R any](name string, seed R, parseLine func(string) T, j
 
 func Sum(a int, b int) int {
 	return a + b
+}
+
+func Abs(a int) int {
+	if a < 0 {
+		return -a
+	}
+	return a
 }
 
 func Identity[T any](a T) T {
