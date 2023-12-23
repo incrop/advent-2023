@@ -19,37 +19,27 @@ func (galaxies Galaxies) expand(factor int) {
 	if galaxies == nil {
 		return
 	}
-	expandDimension := func(get func(Galaxy) int, set func(*Galaxy, int)) {
+	expandDimension := func(dimension func(*Galaxy) *int) {
 		sort.Slice(galaxies, func(i, j int) bool {
-			return get(galaxies[i]) < get(galaxies[j])
+			return *dimension(&galaxies[i]) < *dimension(&galaxies[j])
 		})
 		totalDelta := 0
-		lastVal := get(galaxies[0])
+		lastVal := *dimension(&galaxies[0])
 		for i := 1; i < len(galaxies); i++ {
-			val := get(galaxies[i])
-			if delta := val - lastVal; delta > 1 {
+			val := dimension(&galaxies[i])
+			if delta := *val - lastVal; delta > 1 {
 				totalDelta += (delta - 1) * (factor - 1)
 			}
-			lastVal = val
-			set(&galaxies[i], val+totalDelta)
+			lastVal = *val
+			*val += totalDelta
 		}
 	}
-	expandDimension(
-		func(galaxy Galaxy) int {
-			return galaxy.x
-		},
-		func(galaxy *Galaxy, x int) {
-			galaxy.x = x
-		},
-	)
-	expandDimension(
-		func(galaxy Galaxy) int {
-			return galaxy.y
-		},
-		func(galaxy *Galaxy, y int) {
-			galaxy.y = y
-		},
-	)
+	expandDimension(func(galaxy *Galaxy) *int {
+		return &galaxy.x
+	})
+	expandDimension(func(galaxy *Galaxy) *int {
+		return &galaxy.y
+	})
 }
 
 func (galaxies Galaxies) distancePairwiseSum() (sum int) {
